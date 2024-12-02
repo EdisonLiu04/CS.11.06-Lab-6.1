@@ -9,7 +9,10 @@ public class AdventureTime {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-
+        System.out.println(challengeOne("inputOneTwo.txt"));
+        System.out.println(challengeTwo("inputOneTwo.txt"));
+        System.out.println(challengeThree("inputThreeFour.txt"));
+        System.out.println(challengeFour("inputThreeFour.txt"));
 
     }
 
@@ -22,7 +25,14 @@ public class AdventureTime {
      * @throws IOException
      */
     public static int challengeOne(String fileName) throws IOException {
-        return 0;
+        int[] numbers = readFile(fileName);
+        int counter = 0;
+        for(int i = 0; i<numbers.length-1;i++){
+            if(numbers[i]>numbers[i+1]){
+                counter ++;
+            }
+        }
+        return counter;
     }
 
     /** TODO 2
@@ -34,8 +44,17 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeTwo(String fileName) throws FileNotFoundException {
-        return 0;
-    }
+        int[] numbers = readFile(fileName);
+        int count = 0;
+        for(int i = 0;i<numbers.length-3;i++){
+            int firstSum = numbers[i]+numbers[i+1]+numbers[i+2];
+            int secondSum = numbers[i+1]+numbers[1+2]+numbers[i+3];
+            if(secondSum>firstSum){
+                count++;
+            }
+        }
+        return count;
+     }
 
     /** TODO 3
      *
@@ -46,7 +65,22 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeThree(String fileName) throws FileNotFoundException {
-        return 0;
+        String[] readfile = readStringFile(fileName);
+        int depth = 0;
+        int horizontal = 0;
+        for(int i = 0; i<readfile.length; i++){
+            String currentPosition = readfile[i];
+            String[] splitting = currentPosition.split(" ");
+            if (splitting[0].equals("forward")){
+                horizontal += Integer.parseInt(splitting[1]);
+            } else if (splitting[0].equals("down")) {
+                depth += Integer.parseInt(splitting[1]);
+            } else  {
+                depth -= Integer.parseInt(splitting[1]);
+            }
+
+        }
+        return depth*horizontal;
     }
 
     /** TODO 4
@@ -58,7 +92,23 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeFour(String filename) throws FileNotFoundException {
-        return 0;
+        String[] read = readStringFile(filename);
+        int depth = 0;
+        int horizontal = 0;
+        int aim = 0;
+        for(int i =0; i<read.length; i++){
+            String currentPosition = read[i];
+            String[] splitting = currentPosition.split(" ");
+            if (splitting[0].equals("forward")){
+                horizontal += Integer.parseInt(splitting[1]);
+                depth += aim*Integer.parseInt(splitting[1]);
+            } else if (splitting[0].equals("up")) {
+                aim-=Integer.parseInt(splitting[1]);
+            } else {
+                aim+=Integer.parseInt(splitting[1]);
+            }
+        }
+        return horizontal*depth;
     }
 
     /** This method will write the values passed as challengeOne, challengeTwo, challengeThree, and challengeFour to a text file.
@@ -90,6 +140,19 @@ public class AdventureTime {
         return data;
     }
 
+    private static String[] readStringFile(String inputFilename) throws FileNotFoundException {
+        File file = new File(inputFilename);
+        Scanner scanner = new Scanner(file);
+        int numberOfLinesInFile = countLinesInFile(inputFilename);
+        String[] data = new String[numberOfLinesInFile];
+        int index = 0;
+        while (scanner.hasNextLine()) {
+            data[index++] = scanner.nextLine();
+        }
+        scanner.close();
+        return data;
+    }
+
     /** This method will count the number of lines in a text file, which it will return.
      * Do not edit this method.
      */
@@ -104,5 +167,4 @@ public class AdventureTime {
         scanner.close();
         return lineCount;
     }
-
 }
